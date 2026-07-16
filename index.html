@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>~/dashboard — life-terminal</title>
+  <meta name="description" content="A compact, terminal-styled life dashboard: clock, to-do list, focus timer, and quick links." />
+
+  <!-- Monospace display font. Falls back to system monospace stack if offline. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="crt-overlay" aria-hidden="true"></div>
+
+  <div class="dashboard">
+
+    <!-- ============ TOP BAR : greeting / clock / theme ============ -->
+    <header class="topbar">
+      <div class="prompt">
+        <span class="prompt-user">F4hry@dashboard</span><span class="prompt-sep">:</span><span class="prompt-path">~$</span>
+        <span id="greeting" class="prompt-greeting">booting</span><span class="cursor" aria-hidden="true">_</span>
+      </div>
+
+      <div class="status">
+        <span id="dateOut" class="date-out">----</span>
+        <span id="clockOut" class="clock-out">--:--:--</span>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label" id="themeLabel">DARK</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ MAIN GRID ============ -->
+    <main class="grid">
+
+      <!-- ---------------- TO-DO LIST ---------------- -->
+      <section class="panel panel-todo" aria-labelledby="todoTitle">
+        <div class="panel-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="panel-title" id="todoTitle">~/todo.list</span>
+          <span class="panel-meta" id="todoCount">0/0 done</span>
+        </div>
+
+        <div class="panel-body">
+          <form id="todoForm" class="todo-form" autocomplete="off">
+            <span class="field-caret">$</span>
+            <input id="todoInput" type="text" placeholder="type a task and hit enter..." maxlength="140" required />
+            <button type="submit" class="btn btn-accent">ADD</button>
+          </form>
+
+          <div class="todo-toolbar">
+            <label for="sortSelect">sort_by</label>
+            <select id="sortSelect">
+              <option value="created">date added</option>
+              <option value="alpha">a &rarr; z</option>
+              <option value="status">status</option>
+            </select>
+            <span class="toolbar-spacer"></span>
+            <button id="clearDoneBtn" class="btn btn-ghost btn-xs" type="button">clear done</button>
+          </div>
+
+          <ul id="todoList" class="todo-list"></ul>
+          <p id="todoEmpty" class="empty-state">// no tasks yet — add your first one above</p>
+        </div>
+      </section>
+
+      <!-- ---------------- FOCUS TIMER ---------------- -->
+      <section class="panel panel-timer" aria-labelledby="timerTitle">
+        <div class="panel-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="panel-title" id="timerTitle">~/pomodoro.sh</span>
+          <span class="panel-meta" id="timerState">idle</span>
+        </div>
+
+        <div class="panel-body timer-body">
+          <div class="timer-display" id="timerDisplay">25:00</div>
+
+          <div class="timer-controls">
+            <button id="startBtn" class="btn btn-accent" type="button">START</button>
+            <button id="stopBtn" class="btn" type="button" disabled>STOP</button>
+            <button id="resetBtn" class="btn btn-ghost" type="button">RESET</button>
+          </div>
+
+          <div class="timer-presets">
+            <span class="presets-label">session_min</span>
+            <div class="preset-group" id="presetGroup">
+              <button class="preset-btn" data-min="15" type="button">15</button>
+              <button class="preset-btn is-active" data-min="25" type="button">25</button>
+              <button class="preset-btn" data-min="45" type="button">45</button>
+            </div>
+            <input id="customMin" class="custom-min" type="number" min="1" max="180" placeholder="custom" aria-label="Custom session length in minutes" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------- QUICK LINKS ---------------- -->
+      <section class="panel panel-links" aria-labelledby="linksTitle">
+        <div class="panel-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="panel-title" id="linksTitle">~/bookmarks.sh</span>
+          <span class="panel-meta" id="linksCount">0 saved</span>
+        </div>
+
+        <div class="panel-body">
+          <form id="linkForm" class="link-form" autocomplete="off">
+            <input id="linkName" type="text" placeholder="label" maxlength="24" required />
+            <input id="linkUrl" type="text" placeholder="url.com" required />
+            <button type="submit" class="btn btn-accent btn-xs">+ ADD</button>
+          </form>
+
+          <div id="linksGrid" class="links-grid"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <span>local_storage://all data stays on this device — nothing leaves the browser</span>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
